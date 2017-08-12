@@ -1,0 +1,39 @@
+diff -ruN src.old/libqalculate/util.cc src/libqalculate/util.cc
+--- src.old/libqalculate/util.cc	2017-08-12 22:52:03.147187280 +0000
++++ src/libqalculate/util.cc	2017-08-12 22:52:32.920958583 +0000
+@@ -835,32 +835,17 @@
+ }
+ 
+ string getPackageDataDir() {
+-#ifdef USE_ABSOLUTE_PACKAGE_PATHS
+-	string datadir(PACKAGE_DATA_DIR);
++	const char *snap = getenv("SNAP");
++	string datadir(snap);
++	datadir += "/share";
+ 	return datadir;
+-#else
+-	char exepath[MAX_PATH];
+-	GetModuleFileName(NULL, exepath, MAX_PATH);
+-	string datadir(exepath);
+-	datadir.resize(datadir.find_last_of('\\'));
+-	if (datadir.substr(datadir.length() - 3) == "bin") {
+-		datadir.resize(datadir.find_last_of('\\'));
+-	}
+-	datadir += "\\share";
+-	return datadir;
+-#endif
+ }
+ 
+ string getPackageLocaleDir() {
+-#ifdef USE_ABSOLUTE_PACKAGE_PATHS
+-	string localedir(PACKAGE_LOCALE_DIR);
+-	return localedir;
+-#else
+ 	gchar *dir = g_build_filename(getPackageDataDir().c_str(), "locale", NULL);
+ 	string localeDir(dir);
+ 	g_free(dir);
+ 	return localeDir;
+-#endif
+ }
+ 
+ 

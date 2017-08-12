@@ -1,0 +1,92 @@
+name: qalculate-jz
+version: '1.0.0-0'
+summary: The ultimate desktop calculator
+description: |
+  Qalculate! is a multi-purpose cross-platform desktop calculator. It is small
+  and simple to use but with much power and versatility underneath. Features
+  include customizable functions, units, arbitrary precision, plotting, and a
+  user-friendly interface 
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: strict
+
+apps:
+  qalc:
+    command: desktop-launch qalc
+    plugs: [network]
+  gtk:
+    command: desktop-launch qalculate-gtk
+    plugs: [unity7, network, home]
+
+plugs:
+    gnome-3-24-platform:
+      interface: content
+      target: $SNAP/gnome-platform
+      default-provider: gnome-3-24:gnome-3-24-platform
+
+parts:
+  libqalculate:
+    source: https://github.com/Qalculate/libqalculate/releases/download/v1.0.0a/libqalculate-1.0.0.tar.gz
+    plugin: autotools
+    build-packages:
+      - libncurses5-dev
+      - libreadline-dev
+      - libglib2.0-dev
+      - libxml2-dev
+      - libcln-dev
+      - libgmp-dev
+      - intltool
+    stage-packages:
+      - libxml2
+    prepare: |
+      cat ../../../snap-path.patch | patch -p1
+    install: |
+      echo Stripping qalc
+      strip $SNAPCRAFT_PART_INSTALL/bin/qalc
+    prime:
+      - -include
+      - -lib/pkgconfig
+      - -lib/*.a
+      - -share/doc
+      - -usr/share/doc
+      - -usr/share/lintian
+  qalculate-gtk:
+    source: https://github.com/Qalculate/qalculate-gtk/releases/download/v1.0.0/qalculate-gtk-1.0.0.tar.gz
+    plugin: autotools
+    build-packages:
+      - libgmp-dev
+      - libgtk-3-dev
+      - libglade2-dev
+      - libxml2-dev
+      - intltool
+    prepare: |
+      cat ../../../allow_older_gtk.patch | patch -p1
+    install: |
+      echo Stripping qalculate-gtk
+      strip $SNAPCRAFT_PART_INSTALL/bin/qalculate-gtk
+    after:
+      - libqalculate
+      - desktop-gnome-platform
+    prime:
+      - -share/applications
+      - -share/doc
+
+  desktop-gnome-platform:
+    source-subdir: gtk
+    plugin: make
+    make-parameters: ["FLAVOR=gtk3"]
+    build-packages:
+      - libgtk-3-dev
+    source: https://github.com/kenvandine/snapcraft-desktop-helpers.git
+    source-branch: gnome-3-24
+    install: mkdir -p $SNAPCRAFT_PART_INSTALL/gnome-platform
+
+  # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
+  # workaround snapcraft trying to outsmart us by copying ldd listed libraries
+  workaround:
+    plugin: nil
+    stage-packages:
+      - libgtk-3-0
+    prime:
+      - "-*"
+
