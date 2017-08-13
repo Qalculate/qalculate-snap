@@ -1,7 +1,7 @@
 [Desktop Entry]
-_Name=Qalculate!
-_Comment=Powerful and easy to use calculator
-Exec=qalculate.gtk
+Name=Qalculate!
+Comment=Powerful and easy to use calculator
+Exec=qalculate-jz.gtk
 Icon=${SNAP}/meta/gui/qalculate.png
 Terminal=false
 Type=Application
