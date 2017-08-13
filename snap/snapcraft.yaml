@@ -1,5 +1,5 @@
 name: qalculate-jz
-version: '1.0.0-0'
+version: '1.0.0-1'
 summary: The ultimate desktop calculator
 description: |
   Qalculate! is a multi-purpose cross-platform desktop calculator. It is small
@@ -10,6 +10,18 @@ description: |
 grade: devel # must be 'stable' to release into candidate/stable channels
 confinement: strict
 
+plugs:
+    gnome-3-24-platform:
+      interface: content
+      target: $SNAP/gnome-platform
+      default-provider: gnome-3-24:gnome-3-24-platform
+
+slots:
+  dbus-easytag:
+    interface: dbus
+    name: org.gtk.qalculate
+    bus: session
+
 apps:
   qalc:
     command: desktop-launch qalc
@@ -17,12 +29,6 @@ apps:
   gtk:
     command: desktop-launch qalculate-gtk
     plugs: [unity7, network, home]
-
-plugs:
-    gnome-3-24-platform:
-      interface: content
-      target: $SNAP/gnome-platform
-      default-provider: gnome-3-24:gnome-3-24-platform
 
 parts:
   libqalculate:
