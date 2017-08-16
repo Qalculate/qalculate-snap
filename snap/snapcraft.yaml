@@ -1,5 +1,5 @@
 name: qalculate-jz
-version: '1.0.0-1'
+version: '1.0.0-2'
 summary: The ultimate desktop calculator
 description: |
   Qalculate! is a multi-purpose cross-platform desktop calculator. It is small
@@ -27,8 +27,11 @@ apps:
     command: desktop-launch qalc
     plugs: [network]
   gtk:
-    command: desktop-launch qalculate-gtk
+    command: desktop-launch gp-launch qalculate-gtk
     plugs: [unity7, network, home]
+  gnuplot:
+    command: desktop-launch gp-launch gnuplot
+    plugs: [unity7, home]
 
 parts:
   libqalculate:
@@ -56,6 +59,7 @@ parts:
       - -share/doc
       - -usr/share/doc
       - -usr/share/lintian
+
   qalculate-gtk:
     source: https://github.com/Qalculate/qalculate-gtk/releases/download/v1.0.0/qalculate-gtk-1.0.0.tar.gz
     plugin: autotools
@@ -76,6 +80,47 @@ parts:
     prime:
       - -share/applications
       - -share/doc
+
+  gnuplot:
+    source: https://sourceforge.net/projects/gnuplot/files/gnuplot/5.0.6/gnuplot-5.0.6.tar.gz
+    plugin: autotools
+    configflags:
+      - --without-lasergnu
+      - --with-png
+      - --with-gd
+      - --without-lisp-files
+      - --without-linux-vga
+      - --with-readline=bsd
+      - --disable-wxwidgets
+    build-packages:
+      - libcerf-dev
+      - libcairo2-dev
+      - libedit-dev
+      - libgd2-dev
+      - liblua5.1-dev
+      - lua5.1
+      - libpango1.0-dev
+      - libpng-dev
+      - libx11-dev
+      - libxt-dev
+      - pkg-config
+      - zlib1g-dev
+    prime:
+      - -share/applications
+      - -share/doc
+      - -share/man
+    after:
+      - desktop-gnome-platform
+    install: |
+      echo Stripping gnuplot
+      strip $SNAPCRAFT_PART_INSTALL/bin/gnuplot
+      strip $SNAPCRAFT_PART_INSTALL/libexec/gnuplot/5.0/gnuplot_x11
+
+  gp-launch:
+    plugin: dump
+    source: launcher
+    organize:
+      gp-launch: bin/
 
   desktop-gnome-platform:
     source-subdir: gtk
