@@ -47,10 +47,14 @@ parts:
       - libgmp-dev
       - libmpfr-dev
       - intltool
+      - doxygen
     stage-packages:
       - libxml2
     prepare: |
-      cat ../../../snap-path.patch | patch -p1
+      for p in ../../../patches/lib/*.patch
+      do
+        cat $p | patch -p1
+      done
     install: |
       echo Stripping qalc
       strip $SNAPCRAFT_PART_INSTALL/bin/qalc
@@ -73,7 +77,10 @@ parts:
       - libxml2-dev
       - intltool
     prepare: |
-      cat ../../../allow_older_gtk.patch | patch -p1
+      for p in ../../../patches/gtk/*.patch
+      do
+        cat $p | patch -p1
+      done
     install: |
       echo Stripping qalculate-gtk
       strip $SNAPCRAFT_PART_INSTALL/bin/qalculate-gtk

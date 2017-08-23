@@ -1,11 +1,64 @@
 diff --git a/libqalculate/util.cc b/libqalculate/util.cc
-index 8bd7750..1144e0d 100644
+index 8bd7750..42dd0cf 100644
 --- a/libqalculate/util.cc
 +++ b/libqalculate/util.cc
-@@ -533,18 +533,9 @@ string getPackageDataDir() {
- #ifndef WIN32
- 	return PACKAGE_DATA_DIR;
- #else
+@@ -451,46 +451,13 @@ string getOldLocalDir() {
+ #endif
+ }
+ string getLocalDir() {
+-#ifdef _WIN32
+-	char path[MAX_PATH];
+-	SHGetFolderPathA(NULL, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, path);
+-	string str = path;
+-	return str + "\\Qalculate";
+-#else
+-	const char *homedir;
+-	if((homedir = getenv("XDG_CONFIG_HOME")) == NULL) {
+-		return string(getpwuid(getuid())->pw_dir) + "/.config/qalculate";
+-	}
+-	return string(homedir) + "/qalculate";
+-#endif
++	return string(getenv("SNAP_USER_DATA"));
+ }
+ string getLocalDataDir() {
+-#ifdef _WIN32
+-	char path[MAX_PATH];
+-	SHGetFolderPathA(NULL, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, path);
+-	string str = path;
+-	return str + "\\Qalculate";
+-#else
+-	const char *homedir;
+-	if((homedir = getenv("XDG_DATA_HOME")) == NULL) {
+-		return string(getpwuid(getuid())->pw_dir) + "/.local/share/qalculate";
+-	}
+-	return string(homedir) + "/qalculate";
+-#endif
++	return string(getenv("SNAP_USER_COMMON"));
+ }
+ string getLocalTmpDir() {
+-#ifdef _WIN32
+-	char path[MAX_PATH];
+-	SHGetFolderPathA(NULL, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, path);
+-	string str = path;
+-	return str + "\\cache\\Qalculate";
+-#else
+-	const char *homedir;
+-	if((homedir = getenv("XDG_CACHE_HOME")) == NULL) {
+-		return string(getpwuid(getuid())->pw_dir) + "/.cache/qalculate";
+-	}
+-	return string(homedir) + "/qalculate";
+-#endif
++	return string(getenv("SNAP_USER_DATA"));
+ }
+ 
+ bool move_file(const char *from_file, const char *to_file) {
+@@ -530,69 +497,18 @@ bool move_file(const char *from_file, const char *to_file) {
+ }
+ 
+ string getPackageDataDir() {
+-#ifndef WIN32
+-	return PACKAGE_DATA_DIR;
+-#else
 -	char exepath[MAX_PATH];
 -	GetModuleFileName(NULL, exepath, MAX_PATH);
 -	string datadir(exepath);
@@ -22,12 +75,13 @@ index 8bd7750..1144e0d 100644
 +	string datadir(snap);
 +	datadir += "/share";
  	return datadir;
- #endif
+-#endif
  }
-@@ -553,29 +544,7 @@ string getGlobalDefinitionsDir() {
- #ifndef WIN32
- 	return string(PACKAGE_DATA_DIR) + "/qalculate";
- #else
+ 
+ string getGlobalDefinitionsDir() {
+-#ifndef WIN32
+-	return string(PACKAGE_DATA_DIR) + "/qalculate";
+-#else
 -	char exepath[MAX_PATH];
 -	GetModuleFileName(NULL, exepath, MAX_PATH);
 -	string datadir(exepath);
@@ -51,14 +105,14 @@ index 8bd7750..1144e0d 100644
 -		return datadir + "\\data";
 -	}
 -	return datadir + "\\definitions";
+-#endif
 +        return getPackageDataDir() + "/qalculate";
- #endif
  }
  
-@@ -583,15 +552,7 @@ string getPackageLocaleDir() {
- #ifndef WIN32
- 	return PACKAGE_LOCALE_DIR;
- #else
+ string getPackageLocaleDir() {
+-#ifndef WIN32
+-	return PACKAGE_LOCALE_DIR;
+-#else
 -	char exepath[MAX_PATH];
 -	GetModuleFileName(NULL, exepath, MAX_PATH);
 -	string datadir(exepath);
@@ -68,7 +122,8 @@ index 8bd7750..1144e0d 100644
 -		return datadir + "\\share\\locale";
 -	}
 -	return datadir + "\\locale";
+-#endif
 +        return getPackageDataDir() + "/locale";
- #endif
  }
  
+ string buildPath(string dir, string filename) {
