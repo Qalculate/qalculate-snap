@@ -1,0 +1,38 @@
+diff --git a/src/interface.cc b/src/interface.cc
+index 8f48c6a..ca590f2 100644
+--- a/src/interface.cc
++++ b/src/interface.cc
+@@ -450,32 +450,10 @@ gboolean history_row_separator_func(GtkTreeModel *model, GtkTreeIter *iter, gpoi
+ }
+ 
+ GtkBuilder *getBuilder(const char *filename) {
+-#ifndef WIN32
+-	gchar *gstr = g_build_filename (PACKAGE_DATA_DIR, PACKAGE, "ui", filename, NULL);
++	gchar *gstr = g_build_filename (getenv("SNAP"), "share", PACKAGE, "ui", filename, NULL);
+ 	GtkBuilder *builder = gtk_builder_new_from_file(gstr);
+ 	g_free(gstr);
+ 	return builder;
+-#else
+-	char exepath[MAX_PATH];
+-	GetModuleFileName(NULL, exepath, MAX_PATH);
+-	string datadir(exepath);
+-	datadir.resize(datadir.find_last_of('\\'));
+-	if(datadir.substr(datadir.length() - 4) == "\\bin") {
+-		datadir.resize(datadir.find_last_of('\\'));
+-		datadir += "\\share\\";
+-		datadir += PACKAGE;
+-		datadir += "\\ui";
+-	} else if(datadir.substr(datadir.length() - 6) == "\\.libs") {
+-		datadir.resize(datadir.find_last_of('\\'));
+-		datadir.resize(datadir.find_last_of('\\'));
+-		datadir += "\\data";
+-	} else {
+-		datadir += "\\ui";
+-	}
+-	datadir += "\\";
+-	datadir += filename;
+-	return gtk_builder_new_from_file(datadir.c_str());
+-#endif
+ }
+ 
+ void create_button_menus(void) {
