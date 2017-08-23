@@ -1,5 +1,5 @@
 name: qalculate-jz
-version: '1.0.0-2'
+version: '1.0.99-0'
 summary: The ultimate desktop calculator
 description: |
   Qalculate! is a multi-purpose cross-platform desktop calculator. It is small
@@ -35,15 +35,17 @@ apps:
 
 parts:
   libqalculate:
-    source: https://github.com/Qalculate/libqalculate/releases/download/v1.0.0a/libqalculate-1.0.0.tar.gz
+    source: https://github.com/Qalculate/libqalculate.git
+    source-tag: v1.0.99
     plugin: autotools
     build-packages:
       - libncurses5-dev
       - libreadline-dev
-      - libglib2.0-dev
+      - libcurl4-gnutls-dev
+      - libicu-dev
       - libxml2-dev
-      - libcln-dev
       - libgmp-dev
+      - libmpfr-dev
       - intltool
     stage-packages:
       - libxml2
@@ -61,7 +63,8 @@ parts:
       - -usr/share/lintian
 
   qalculate-gtk:
-    source: https://github.com/Qalculate/qalculate-gtk/releases/download/v1.0.0/qalculate-gtk-1.0.0.tar.gz
+    source: https://github.com/Qalculate/qalculate-gtk.git
+    source-tag: v1.0.99
     plugin: autotools
     build-packages:
       - libgmp-dev

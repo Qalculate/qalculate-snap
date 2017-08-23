@@ -1,39 +1,74 @@
-diff -ruN src.old/libqalculate/util.cc src/libqalculate/util.cc
---- src.old/libqalculate/util.cc	2017-08-12 22:52:03.147187280 +0000
-+++ src/libqalculate/util.cc	2017-08-12 22:52:32.920958583 +0000
-@@ -835,32 +835,17 @@
- }
- 
- string getPackageDataDir() {
--#ifdef USE_ABSOLUTE_PACKAGE_PATHS
--	string datadir(PACKAGE_DATA_DIR);
-+	const char *snap = getenv("SNAP");
-+	string datadir(snap);
-+	datadir += "/share";
- 	return datadir;
--#else
+diff --git a/libqalculate/util.cc b/libqalculate/util.cc
+index 8bd7750..1144e0d 100644
+--- a/libqalculate/util.cc
++++ b/libqalculate/util.cc
+@@ -533,18 +533,9 @@ string getPackageDataDir() {
+ #ifndef WIN32
+ 	return PACKAGE_DATA_DIR;
+ #else
 -	char exepath[MAX_PATH];
 -	GetModuleFileName(NULL, exepath, MAX_PATH);
 -	string datadir(exepath);
 -	datadir.resize(datadir.find_last_of('\\'));
--	if (datadir.substr(datadir.length() - 3) == "bin") {
+-	if (datadir.substr(datadir.length() - 4) == "\\bin") {
 -		datadir.resize(datadir.find_last_of('\\'));
+-		datadir += "\\share";
+-	} else if(datadir.substr(datadir.length() - 6) == "\\.libs") {
+-		datadir.resize(datadir.find_last_of('\\'));
+-		datadir.resize(datadir.find_last_of('\\'));
+-		return datadir;
 -	}
--	datadir += "\\share";
--	return datadir;
--#endif
++	const char *snap = getenv("SNAP");
++	string datadir(snap);
++	datadir += "/share";
+ 	return datadir;
+ #endif
+ }
+@@ -553,29 +544,7 @@ string getGlobalDefinitionsDir() {
+ #ifndef WIN32
+ 	return string(PACKAGE_DATA_DIR) + "/qalculate";
+ #else
+-	char exepath[MAX_PATH];
+-	GetModuleFileName(NULL, exepath, MAX_PATH);
+-	string datadir(exepath);
+-	bool is_qalc = datadir.substr(datadir.length() - 8) == "qalc.exe";
+-	datadir.resize(datadir.find_last_of('\\'));
+-	if(datadir.substr(datadir.length() - 4) == "\\bin") {
+-		datadir.resize(datadir.find_last_of('\\'));
+-		datadir += "\\share\\qalculate";
+-		return datadir;
+-	} else if(datadir.substr(datadir.length() - 6) == "\\.libs") {
+-		datadir.resize(datadir.find_last_of('\\'));
+-		datadir.resize(datadir.find_last_of('\\'));
+-		if(!is_qalc) {
+-			datadir.resize(datadir.find_last_of('\\'));
+-			datadir += "\\libqalculate";
+-			if(!dirExists(datadir)) {
+-				datadir += "-";
+-				datadir += VERSION;
+-			}
+-		}
+-		return datadir + "\\data";
+-	}
+-	return datadir + "\\definitions";
++        return getPackageDataDir() + "/qalculate";
+ #endif
  }
  
- string getPackageLocaleDir() {
--#ifdef USE_ABSOLUTE_PACKAGE_PATHS
--	string localedir(PACKAGE_LOCALE_DIR);
--	return localedir;
--#else
- 	gchar *dir = g_build_filename(getPackageDataDir().c_str(), "locale", NULL);
- 	string localeDir(dir);
- 	g_free(dir);
- 	return localeDir;
--#endif
+@@ -583,15 +552,7 @@ string getPackageLocaleDir() {
+ #ifndef WIN32
+ 	return PACKAGE_LOCALE_DIR;
+ #else
+-	char exepath[MAX_PATH];
+-	GetModuleFileName(NULL, exepath, MAX_PATH);
+-	string datadir(exepath);
+-	datadir.resize(datadir.find_last_of('\\'));
+-	if (datadir.substr(datadir.length() - 4) == "\\bin" || datadir.substr(datadir.length() - 6) == "\\.libs") {
+-		datadir.resize(datadir.find_last_of('\\'));
+-		return datadir + "\\share\\locale";
+-	}
+-	return datadir + "\\locale";
++        return getPackageDataDir() + "/locale";
+ #endif
  }
- 
  
