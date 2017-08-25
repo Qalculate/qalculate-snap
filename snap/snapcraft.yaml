@@ -1,5 +1,5 @@
-name: qalculate-jz
-version: '1.0.99-0'
+name: qalculate
+version: '1.9.99'
 summary: The ultimate desktop calculator
 description: |
   Qalculate! is a multi-purpose cross-platform desktop calculator. It is small
@@ -10,14 +10,8 @@ description: |
 grade: stable
 confinement: strict
 
-plugs:
-    gnome-3-24-platform:
-      interface: content
-      target: $SNAP/gnome-platform
-      default-provider: gnome-3-24:gnome-3-24-platform
-
 slots:
-  dbus-qalculate-jz:
+  dbus-qalculate:
     interface: dbus
     name: org.gtk.qalculate
     bus: session
@@ -36,7 +30,7 @@ apps:
 parts:
   libqalculate:
     source: https://github.com/Qalculate/libqalculate.git
-    source-tag: v1.0.99
+    source-tag: master
     plugin: autotools
     build-packages:
       - libncurses5-dev
@@ -68,25 +62,19 @@ parts:
 
   qalculate-gtk:
     source: https://github.com/Qalculate/qalculate-gtk.git
-    source-tag: v1.0.99
+    source-tag: master
     plugin: autotools
     build-packages:
       - libgmp-dev
       - libgtk-3-dev
-      - libglade2-dev
       - libxml2-dev
       - intltool
-    prepare: |
-      for p in ../../../patches/gtk/*.patch
-      do
-        cat $p | patch -p1
-      done
     install: |
       echo Stripping qalculate-gtk
       strip $SNAPCRAFT_PART_INSTALL/bin/qalculate-gtk
     after:
       - libqalculate
-      - desktop-gnome-platform
+      - desktop-gtk3
     prime:
       - -share/applications
       - -share/doc
@@ -120,7 +108,7 @@ parts:
       - -share/doc
       - -share/man
     after:
-      - desktop-gnome-platform
+      - desktop-gtk3
     install: |
       echo Stripping gnuplot
       strip $SNAPCRAFT_PART_INSTALL/bin/gnuplot
@@ -131,23 +119,3 @@ parts:
     source: launcher
     organize:
       gp-launch: bin/
-
-  desktop-gnome-platform:
-    source-subdir: gtk
-    plugin: make
-    make-parameters: ["FLAVOR=gtk3"]
-    build-packages:
-      - libgtk-3-dev
-    source: https://github.com/kenvandine/snapcraft-desktop-helpers.git
-    source-branch: gnome-3-24
-    install: mkdir -p $SNAPCRAFT_PART_INSTALL/gnome-platform
-
-  # https://bazaar.launchpad.net/~ubuntu-desktop/+junk/ghex-snap-gnome-3-24/view/head:/snapcraft.yaml
-  # workaround snapcraft trying to outsmart us by copying ldd listed libraries
-  workaround:
-    plugin: nil
-    stage-packages:
-      - libgtk-3-0
-    prime:
-      - "-*"
-
