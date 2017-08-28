@@ -62,7 +62,7 @@ parts:
 
   qalculate-gtk:
     source: https://github.com/Qalculate/qalculate-gtk.git
-    source-tag: v2.0.0
+    source-tag: v2.0.0a
     plugin: autotools
     build-packages:
       - libgmp-dev
