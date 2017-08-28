@@ -1,5 +1,5 @@
 diff --git a/libqalculate/util.cc b/libqalculate/util.cc
-index 418dfe4..7996834 100644
+index 5be1865..7996834 100644
 --- a/libqalculate/util.cc
 +++ b/libqalculate/util.cc
 @@ -455,48 +455,13 @@ string getOldLocalDir() {
@@ -54,7 +54,7 @@ index 418dfe4..7996834 100644
  }
  
  bool move_file(const char *from_file, const char *to_file) {
-@@ -536,69 +501,18 @@ bool move_file(const char *from_file, const char *to_file) {
+@@ -536,68 +501,18 @@ bool move_file(const char *from_file, const char *to_file) {
  }
  
  string getPackageDataDir() {
@@ -71,7 +71,6 @@ index 418dfe4..7996834 100644
 -	} else if(datadir.substr(datadir.length() - 6) == "\\.libs") {
 -		datadir.resize(datadir.find_last_of('\\'));
 -		datadir.resize(datadir.find_last_of('\\'));
--		return datadir;
 -	}
 -	return datadir;
 -#endif
