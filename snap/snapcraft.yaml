@@ -18,10 +18,10 @@ slots:
 
 apps:
   qalc:
-    command: desktop-launch qalc
+    command: DISABLE_WAYLAND=1 desktop-launch qalc
     plugs: [network]
   gtk:
-    command: desktop-launch gp-launch qalculate-gtk
+    command: DISABLE_WAYLAND=1 desktop-launch gp-launch qalculate-gtk
     plugs: [unity7, network, home]
   gnuplot:
     command: desktop-launch gp-launch gnuplot
