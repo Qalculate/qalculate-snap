@@ -18,13 +18,21 @@ slots:
 
 apps:
   qalc:
-    command: DISABLE_WAYLAND=1 desktop-launch qalc
+    environment: 
+        DISABLE_WAYLAND: 1
+        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.0
+    command: desktop-launch qalc
     plugs: [network]
   gtk:
-    command: DISABLE_WAYLAND=1 desktop-launch gp-launch qalculate-gtk
+    environment: 
+        DISABLE_WAYLAND: 1
+        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.0
+    command:  desktop-launch qalculate-gtk
     plugs: [unity7, network, home]
   gnuplot:
-    command: desktop-launch gp-launch gnuplot
+    environment: 
+        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.0
+    command: desktop-launch gnuplot
     plugs: [unity7, home]
 
 parts:
@@ -114,8 +122,3 @@ parts:
       strip $SNAPCRAFT_PART_INSTALL/bin/gnuplot
       strip $SNAPCRAFT_PART_INSTALL/libexec/gnuplot/5.0/gnuplot_x11
 
-  gp-launch:
-    plugin: dump
-    source: launcher
-    organize:
-      gp-launch: bin/
