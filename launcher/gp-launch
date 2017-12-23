@@ -2,5 +2,6 @@
 set -e
 
 export GNUPLOT_DRIVER_DIR=$SNAP/libexec/gnuplot/5.0
+export WAYLAND_DISPLAY="x"
 exec "$@"
 
