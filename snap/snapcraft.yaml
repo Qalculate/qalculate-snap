@@ -38,7 +38,7 @@ apps:
 parts:
   libqalculate:
     source: https://github.com/Qalculate/libqalculate.git
-    source-tag: v2.6.0
+    source-tag: v2.6.0a
     plugin: autotools
     build-packages:
       - libncurses5-dev
