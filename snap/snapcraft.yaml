@@ -1,5 +1,5 @@
 name: qalculate
-version: '2.6.0'
+version: '2.6.0b'
 summary: The ultimate desktop calculator
 description: |
   Qalculate! is a multi-purpose cross-platform desktop calculator. It is small
@@ -38,7 +38,7 @@ apps:
 parts:
   libqalculate:
     source: https://github.com/Qalculate/libqalculate.git
-    source-tag: v2.6.0a
+    source-tag: v2.6.0b
     plugin: autotools
     build-packages:
       - libncurses5-dev
