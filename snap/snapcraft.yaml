@@ -57,7 +57,6 @@ apps:
 parts:
   libqalculate:
     source: https://github.com/Qalculate/libqalculate.git
-    source-tag: HEAD
     plugin: autotools
     build-packages:
       - libncurses5-dev
@@ -89,7 +88,6 @@ parts:
 
   qalculate-gtk:
     source: https://github.com/Qalculate/qalculate-gtk.git
-    source-tag: HEAD
     plugin: autotools
     build-packages:
       - libgmp-dev
