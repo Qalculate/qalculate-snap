@@ -39,15 +39,17 @@ slots:
 
 apps:
   qalc:
-    environment: 
+    environment:
+        DISABLE_WAYLAND: 1
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command: desktop-launch qalc
     plugs: [network]
   gtk:
-    environment: 
+    environment:
+        DISABLE_WAYLAND: 1
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command:  desktop-launch qalculate-gtk
-    plugs: [desktop, desktop-legacy, unity7, network, home, wayland]
+    plugs: [unity7, network, home]
   gnuplot:
     environment: 
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
