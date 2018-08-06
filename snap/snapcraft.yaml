@@ -10,8 +10,26 @@ description: |
   (including integrals and equations), arbitrary precision, interval arithmetic,
   plotting, and a user-friendly interface.
 
-grade: stable
+grade: devel
 confinement: strict
+
+plugs:
+  gnome-3-26-1604:
+    interface: content
+    target: $SNAP/gnome-platform
+    default-provider: gnome-3-26-1604
+  gtk-3-themes:
+    interface: content
+    target: $SNAP/data-dir/themes
+    default-provider: gtk-common-themes
+  icon-themes:
+    interface: content
+    target: $SNAP/data-dir/icons
+    default-provider: gtk-common-themes
+  sound-themes:
+    interface: content
+    target: $SNAP/data-dir/sounds
+    default-provider: gtk-common-themes
 
 slots:
   dbus-qalculate:
@@ -22,26 +40,24 @@ slots:
 apps:
   qalc:
     environment: 
-        DISABLE_WAYLAND: 1
-        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.0
+        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command: desktop-launch qalc
     plugs: [network]
   gtk:
     environment: 
-        DISABLE_WAYLAND: 1
-        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.0
+        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command:  desktop-launch qalculate-gtk
-    plugs: [unity7, network, home]
+    plugs: [desktop, desktop-legacy, unity7, network, home, wayland]
   gnuplot:
     environment: 
-        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.0
+        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command: desktop-launch gnuplot
     plugs: [unity7, home]
 
 parts:
   libqalculate:
     source: https://github.com/Qalculate/libqalculate.git
-    source-tag: v2.6.1
+    source-tag: HEAD
     plugin: autotools
     build-packages:
       - libncurses5-dev
@@ -55,12 +71,12 @@ parts:
       - doxygen
     stage-packages:
       - libxml2
-    prepare: |
+    override-build: |
       for p in ../../../patches/lib/*.patch
       do
         cat $p | patch -p1
       done
-    install: |
+      snapcraftctl build
       echo Stripping qalc
       strip $SNAPCRAFT_PART_INSTALL/bin/qalc
     prime:
@@ -73,25 +89,26 @@ parts:
 
   qalculate-gtk:
     source: https://github.com/Qalculate/qalculate-gtk.git
-    source-tag: v2.6.1
+    source-tag: HEAD
     plugin: autotools
     build-packages:
       - libgmp-dev
       - libgtk-3-dev
       - libxml2-dev
       - intltool
-    install: |
+    override-build: |
+      snapcraftctl build
       echo Stripping qalculate-gtk
       strip $SNAPCRAFT_PART_INSTALL/bin/qalculate-gtk
     after:
       - libqalculate
-      - desktop-gtk3
+      - desktop-gnome-platform
     prime:
       - -share/applications
       - -share/doc
 
   gnuplot:
-    source: https://sourceforge.net/projects/gnuplot/files/gnuplot/5.0.7/gnuplot-5.0.7.tar.gz
+    source: https://sourceforge.net/projects/gnuplot/files/gnuplot/5.2.4/gnuplot-5.2.4.tar.gz
     plugin: autotools
     configflags:
       - --without-lasergnu
@@ -105,7 +122,7 @@ parts:
       - libcerf-dev
       - libcairo2-dev
       - libedit-dev
-      - libgd2-dev
+      - libgd-dev
       - liblua5.1-dev
       - lua5.1
       - libpango1.0-dev
@@ -119,9 +136,10 @@ parts:
       - -share/doc
       - -share/man
     after:
-      - desktop-gtk3
-    install: |
+      - desktop-gnome-platform
+    override-build: |
+      snapcraftctl build
       echo Stripping gnuplot
       strip $SNAPCRAFT_PART_INSTALL/bin/gnuplot
-      strip $SNAPCRAFT_PART_INSTALL/libexec/gnuplot/5.0/gnuplot_x11
+      strip $SNAPCRAFT_PART_INSTALL/libexec/gnuplot/5.2/gnuplot_x11
 
