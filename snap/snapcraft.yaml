@@ -1,5 +1,5 @@
 name: qalculate
-version: '2.6.1'
+version: '2.6.2'
 summary: The ultimate desktop calculator
 description: |
   Qalculate! is a multi-purpose cross-platform desktop calculator. It is simple
@@ -10,7 +10,7 @@ description: |
   (including integrals and equations), arbitrary precision, interval arithmetic,
   plotting, and a user-friendly interface.
 
-grade: devel
+grade: stable
 confinement: strict
 
 plugs:
@@ -59,6 +59,7 @@ apps:
 parts:
   libqalculate:
     source: https://github.com/Qalculate/libqalculate.git
+    source-tag: v2.6.2
     plugin: autotools
     build-packages:
       - libncurses5-dev
@@ -90,6 +91,7 @@ parts:
 
   qalculate-gtk:
     source: https://github.com/Qalculate/qalculate-gtk.git
+    source-tag: v2.6.2
     plugin: autotools
     build-packages:
       - libgmp-dev
