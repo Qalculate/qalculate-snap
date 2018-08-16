@@ -145,3 +145,10 @@ parts:
       strip $SNAPCRAFT_PART_INSTALL/bin/gnuplot
       strip $SNAPCRAFT_PART_INSTALL/libexec/gnuplot/5.2/gnuplot_x11
 
+  workaround:
+    plugin: nil
+    stage-packages:
+      - libgtk-3-0
+    prime:
+      - "-*"
+
