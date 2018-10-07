@@ -99,6 +99,10 @@ parts:
       - libxml2-dev
       - intltool
     override-build: |
+      for p in ../../../patches/gui/*.patch
+      do
+        cat $p | patch -p1
+      done
       snapcraftctl build
       echo Stripping qalculate-gtk
       strip $SNAPCRAFT_PART_INSTALL/bin/qalculate-gtk
