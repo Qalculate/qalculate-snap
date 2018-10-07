@@ -111,6 +111,7 @@ parts:
       - desktop-gnome-platform
     prime:
       - -share/applications
+      - -share/doc
 
   gnuplot:
     source: https://sourceforge.net/projects/gnuplot/files/gnuplot/5.2.4/gnuplot-5.2.4.tar.gz

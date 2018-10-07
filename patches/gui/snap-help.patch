@@ -1,15 +1,13 @@
 diff --git a/src/callbacks.cc b/src/callbacks.cc
-index e0fd653..ae80e4d 100644
+index e0fd653..0f940d6 100644
 --- a/src/callbacks.cc
 +++ b/src/callbacks.cc
-@@ -541,7 +541,9 @@ void show_help(const char *file, GObject *parent) {
+@@ -541,7 +541,7 @@ void show_help(const char *file, GObject *parent) {
  	}
  #else
  	GError *error = NULL;
 -	surl = "file://" PACKAGE_DOC_DIR "/html/";
-+	surl = "file://";
-+	surl += getPackageDataDir();
-+	surl += "/doc/qalculate-gtk/html/";
++	surl = "https://qalculate.github.io/manual/";
  	surl += file;
  #	if GTK_MAJOR_VERSION > 3 || GTK_MINOR_VERSION >= 22
  	gtk_show_uri_on_window(GTK_WINDOW(parent), surl.c_str(), gtk_get_current_event_time(), &error);
