@@ -1,131 +1,73 @@
 diff --git a/libqalculate/util.cc b/libqalculate/util.cc
-index 5be1865..7996834 100644
+index f1be1b4..38b9b17 100644
 --- a/libqalculate/util.cc
 +++ b/libqalculate/util.cc
-@@ -455,48 +455,13 @@ string getOldLocalDir() {
- #endif
- }
- string getLocalDir() {
--#ifdef _WIN32
--	char path[MAX_PATH];
--	SHGetFolderPathA(NULL, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, path);
--	string str = path;
--	return str + "\\Qalculate";
--#else
+@@ -457,11 +457,7 @@ string getLocalDir() {
+ 	return str + "\\Qalculate";
+ #	endif
+ #else
 -	const char *homedir;
 -	if((homedir = getenv("XDG_CONFIG_HOME")) == NULL) {
 -		return string(getpwuid(getuid())->pw_dir) + "/.config/qalculate";
 -	}
 -	return string(homedir) + "/qalculate";
--#endif
 +	return string(getenv("SNAP_USER_DATA"));
+ #endif
  }
  string getLocalDataDir() {
--#ifdef _WIN32
--	char path[MAX_PATH];
--	SHGetFolderPathA(NULL, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, path);
--	string str = path;
--	return str + "\\Qalculate";
--#else
+@@ -480,11 +476,7 @@ string getLocalDataDir() {
+ 	return str + "\\Qalculate";
+ #	endif
+ #else
 -	const char *homedir;
 -	if((homedir = getenv("XDG_DATA_HOME")) == NULL) {
 -		return string(getpwuid(getuid())->pw_dir) + "/.local/share/qalculate";
 -	}
 -	return string(homedir) + "/qalculate";
--#endif
 +	return string(getenv("SNAP_USER_COMMON"));
+ #endif
  }
  string getLocalTmpDir() {
--#ifdef _WIN32
--	char path[MAX_PATH];
--	SHGetFolderPathA(NULL, CSIDL_LOCAL_APPDATA | CSIDL_FLAG_CREATE, NULL, 0, path);
--	string str = path;
--	str += "\\cache";
--	_mkdir(str.c_str());
--	return str + "\\Qalculate";
--#else
+@@ -505,11 +497,7 @@ string getLocalTmpDir() {
+ 	return str + "\\Qalculate";
+ #	endif
+ #else
 -	const char *homedir;
 -	if((homedir = getenv("XDG_CACHE_HOME")) == NULL) {
 -		return string(getpwuid(getuid())->pw_dir) + "/.cache/qalculate";
 -	}
 -	return string(homedir) + "/qalculate";
--#endif
 +	return string(getenv("SNAP_USER_DATA"));
+ #endif
  }
  
- bool move_file(const char *from_file, const char *to_file) {
-@@ -536,68 +501,18 @@ bool move_file(const char *from_file, const char *to_file) {
- }
+@@ -551,7 +539,10 @@ bool move_file(const char *from_file, const char *to_file) {
  
  string getPackageDataDir() {
--#ifndef WIN32
+ #ifndef WIN32
 -	return PACKAGE_DATA_DIR;
--#else
--	char exepath[MAX_PATH];
--	GetModuleFileName(NULL, exepath, MAX_PATH);
--	string datadir(exepath);
--	datadir.resize(datadir.find_last_of('\\'));
--	if (datadir.substr(datadir.length() - 4) == "\\bin") {
--		datadir.resize(datadir.find_last_of('\\'));
--		datadir += "\\share";
--	} else if(datadir.substr(datadir.length() - 6) == "\\.libs") {
--		datadir.resize(datadir.find_last_of('\\'));
--		datadir.resize(datadir.find_last_of('\\'));
--	}
--	return datadir;
--#endif
 +	const char *snap = getenv("SNAP");
 +	string datadir(snap);
 +	datadir += "/share";
 + 	return datadir;
- }
+ #else
+ 	char exepath[MAX_PATH];
+ 	GetModuleFileName(NULL, exepath, MAX_PATH);
+@@ -570,7 +561,7 @@ string getPackageDataDir() {
  
  string getGlobalDefinitionsDir() {
--#ifndef WIN32
+ #ifndef WIN32
 -	return string(PACKAGE_DATA_DIR) + "/qalculate";
--#else
--	char exepath[MAX_PATH];
--	GetModuleFileName(NULL, exepath, MAX_PATH);
--	string datadir(exepath);
--	bool is_qalc = datadir.substr(datadir.length() - 8) == "qalc.exe";
--	datadir.resize(datadir.find_last_of('\\'));
--	if(datadir.substr(datadir.length() - 4) == "\\bin") {
--		datadir.resize(datadir.find_last_of('\\'));
--		datadir += "\\share\\qalculate";
--		return datadir;
--	} else if(datadir.substr(datadir.length() - 6) == "\\.libs") {
--		datadir.resize(datadir.find_last_of('\\'));
--		datadir.resize(datadir.find_last_of('\\'));
--		if(!is_qalc) {
--			datadir.resize(datadir.find_last_of('\\'));
--			datadir += "\\libqalculate";
--			if(!dirExists(datadir)) {
--				datadir += "-";
--				datadir += VERSION;
--			}
--		}
--		return datadir + "\\data";
--	}
--	return datadir + "\\definitions";
--#endif
 +	return getPackageDataDir() + "/qalculate";
- }
+ #else
+ 	char exepath[MAX_PATH];
+ 	GetModuleFileName(NULL, exepath, MAX_PATH);
+@@ -600,7 +591,7 @@ string getGlobalDefinitionsDir() {
  
  string getPackageLocaleDir() {
--#ifndef WIN32
+ #ifndef WIN32
 -	return PACKAGE_LOCALE_DIR;
--#else
--	char exepath[MAX_PATH];
--	GetModuleFileName(NULL, exepath, MAX_PATH);
--	string datadir(exepath);
--	datadir.resize(datadir.find_last_of('\\'));
--	if (datadir.substr(datadir.length() - 4) == "\\bin" || datadir.substr(datadir.length() - 6) == "\\.libs") {
--		datadir.resize(datadir.find_last_of('\\'));
--		return datadir + "\\share\\locale";
--	}
--	return datadir + "\\locale";
--#endif
 +	return getPackageDataDir() + "/locale";
- }
- 
- string buildPath(string dir, string filename) {
+ #else
+ 	char exepath[MAX_PATH];
+ 	GetModuleFileName(NULL, exepath, MAX_PATH);
