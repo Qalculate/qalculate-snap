@@ -1,5 +1,5 @@
 name: qalculate
-version: '3.2.0'
+version: '3.3.0'
 summary: The ultimate desktop calculator
 description: |
   Qalculate! is a multi-purpose cross-platform desktop calculator. It is simple
@@ -60,7 +60,7 @@ apps:
 parts:
   libqalculate:
     source: https://github.com/Qalculate/libqalculate.git
-    source-tag: v3.2.0
+    source-tag: v3.3.0
     plugin: autotools
     build-packages:
       - libncurses5-dev
@@ -92,7 +92,7 @@ parts:
 
   qalculate-gtk:
     source: https://github.com/Qalculate/qalculate-gtk.git
-    source-tag: v3.2.0
+    source-tag: v3.3.0
     plugin: autotools
     build-packages:
       - libgmp-dev
@@ -115,7 +115,7 @@ parts:
       - -share/doc
 
   gnuplot:
-    source: https://sourceforge.net/projects/gnuplot/files/gnuplot/5.2.6/gnuplot-5.2.6.tar.gz
+    source: https://sourceforge.net/projects/gnuplot/files/gnuplot/5.2.7/gnuplot-5.2.7.tar.gz
     plugin: autotools
     configflags:
       - --without-lasergnu
