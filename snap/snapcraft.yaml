@@ -112,7 +112,6 @@ parts:
       strip $SNAPCRAFT_PART_INSTALL/bin/qalculate-gtk
     after:
       - libqalculate
-      - desktop-gnome-platform
     prime:
       - -share/applications
       - -share/doc
@@ -127,7 +126,7 @@ parts:
       - --without-lua
       - --without-qt
       - --with-readline=gnu
-      - --disable-wxwidgets
+      - --enable-wxwidgets
     build-packages:
       - libcairo2-dev
       - libpango1.0-dev
@@ -140,8 +139,6 @@ parts:
       - -share/applications
       - -share/doc
       - -share/man
-    after:
-      - desktop-gnome-platform
     override-build: |
       snapcraftctl build
       echo Stripping gnuplot
