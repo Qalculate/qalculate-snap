@@ -74,6 +74,7 @@ parts:
       - doxygen
     stage-packages:
       - libxml2
+      - libcurl3-gnutls
     override-build: |
       for p in ../../../patches/lib/*.patch
       do
@@ -118,20 +119,15 @@ parts:
     source: https://sourceforge.net/projects/gnuplot/files/gnuplot/5.2.8/gnuplot-5.2.8.tar.gz
     plugin: autotools
     configflags:
-      - --without-lasergnu
-      - --with-png
-      - --with-gd
-      - --without-lisp-files
+      - --without-gd
+      - --without-libcerf
       - --without-linux-vga
-      - --with-readline=bsd
+      - --without-lua
+      - --without-qt
+      - --with-readline=gnu
       - --disable-wxwidgets
     build-packages:
-      - libcerf-dev
       - libcairo2-dev
-      - libedit-dev
-      - libgd-dev
-      - liblua5.1-dev
-      - lua5.1
       - libpango1.0-dev
       - libpng-dev
       - libx11-dev
