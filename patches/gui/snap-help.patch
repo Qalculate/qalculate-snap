@@ -2,7 +2,7 @@ diff --git a/src/callbacks.cc b/src/callbacks.cc
 index e0fd653..0f940d6 100644
 --- a/src/callbacks.cc
 +++ b/src/callbacks.cc
-@@ -541,7 +541,7 @@ void show_help(const char *file, GObject *parent) {
+@@ -693,7 +693,7 @@ void show_help(const char *file, GObject *parent) {
  	}
  #else
  	GError *error = NULL;

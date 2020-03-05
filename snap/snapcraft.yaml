@@ -15,24 +15,6 @@ grade: stable
 confinement: strict
 base: core18
 
-plugs:
-  gnome-3-28-1804:
-    interface: content
-    target: $SNAP/gnome-platform
-    default-provider: gnome-3-28-1804
-  gtk-3-themes:
-    interface: content
-    target: $SNAP/data-dir/themes
-    default-provider: gtk-common-themes
-  icon-themes:
-    interface: content
-    target: $SNAP/data-dir/icons
-    default-provider: gtk-common-themes
-  sound-themes:
-    interface: content
-    target: $SNAP/data-dir/sounds
-    default-provider: gtk-common-themes
-
 slots:
   dbus-qalculate:
     interface: dbus
@@ -45,17 +27,20 @@ apps:
         DISABLE_WAYLAND: 1
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command: desktop-launch qalc
+    extensions: [gnome-3-28]
     plugs: [network]
   gtk:
     environment:
         DISABLE_WAYLAND: 1
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command:  desktop-launch qalculate-gtk
+    extensions: [gnome-3-28]
     plugs: [unity7, network, home]
   gnuplot:
     environment: 
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command: desktop-launch gnuplot
+    extensions: [gnome-3-28]
     plugs: [unity7, home]
 
 parts:
@@ -78,7 +63,7 @@ parts:
       - libmpfr6
       - libxml2
     override-build: |
-      for p in ../../../patches/lib/*.patch
+      for p in $SNAPCRAFT_PROJECT_DIR/patches/lib/*.patch
       do
         cat $p | patch -p1
       done
@@ -103,7 +88,7 @@ parts:
       - libxml2-dev
       - intltool
     override-build: |
-      for p in ../../../patches/gui/*.patch
+      for p in $SNAPCRAFT_PROJECT_DIR/patches/gui/*.patch
       do
         cat $p | patch -p1
       done
@@ -126,7 +111,7 @@ parts:
       - --without-lua
       - --without-qt
       - --with-readline=gnu
-      - --enable-wxwidgets
+      - --disable-wxwidgets
     build-packages:
       - libcairo2-dev
       - libpango1.0-dev

@@ -2,7 +2,7 @@ diff --git a/libqalculate/util.cc b/libqalculate/util.cc
 index f1be1b4..38b9b17 100644
 --- a/libqalculate/util.cc
 +++ b/libqalculate/util.cc
-@@ -457,11 +457,7 @@ string getLocalDir() {
+@@ -470,11 +470,7 @@ string getLocalDir() {
  	return str + "\\Qalculate";
  #	endif
  #else
@@ -15,7 +15,7 @@ index f1be1b4..38b9b17 100644
  #endif
  }
  string getLocalDataDir() {
-@@ -480,11 +476,7 @@ string getLocalDataDir() {
+@@ -493,11 +489,7 @@ string getLocalDataDir() {
  	return str + "\\Qalculate";
  #	endif
  #else
@@ -28,7 +28,7 @@ index f1be1b4..38b9b17 100644
  #endif
  }
  string getLocalTmpDir() {
-@@ -505,11 +497,7 @@ string getLocalTmpDir() {
+@@ -518,11 +510,7 @@ string getLocalTmpDir() {
  	return str + "\\Qalculate";
  #	endif
  #else
@@ -41,7 +41,7 @@ index f1be1b4..38b9b17 100644
  #endif
  }
  
-@@ -551,7 +539,10 @@ bool move_file(const char *from_file, const char *to_file) {
+@@ -564,7 +552,10 @@ bool move_file(const char *from_file, const char *to_file) {
  
  string getPackageDataDir() {
  #ifndef WIN32
@@ -53,7 +53,7 @@ index f1be1b4..38b9b17 100644
  #else
  	char exepath[MAX_PATH];
  	GetModuleFileName(NULL, exepath, MAX_PATH);
-@@ -570,7 +561,7 @@ string getPackageDataDir() {
+@@ -583,7 +574,7 @@ string getPackageDataDir() {
  
  string getGlobalDefinitionsDir() {
  #ifndef WIN32
@@ -62,7 +62,7 @@ index f1be1b4..38b9b17 100644
  #else
  	char exepath[MAX_PATH];
  	GetModuleFileName(NULL, exepath, MAX_PATH);
-@@ -600,7 +591,7 @@ string getGlobalDefinitionsDir() {
+@@ -613,7 +604,7 @@ string getGlobalDefinitionsDir() {
  
  string getPackageLocaleDir() {
  #ifndef WIN32
