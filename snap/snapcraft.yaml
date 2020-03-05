@@ -111,7 +111,7 @@ parts:
       - --without-lua
       - --without-qt
       - --with-readline=gnu
-      - --disable-wxwidgets
+      - --enable-wxwidgets
     build-packages:
       - libcairo2-dev
       - libpango1.0-dev
@@ -120,6 +120,8 @@ parts:
       - libxt-dev
       - pkg-config
       - zlib1g-dev
+    after:
+      - wxwidgets-sdk
     prime:
       - -share/applications
       - -share/doc
@@ -129,6 +131,22 @@ parts:
       echo Stripping gnuplot
       strip $SNAPCRAFT_PART_INSTALL/bin/gnuplot
       strip $SNAPCRAFT_PART_INSTALL/libexec/gnuplot/5.2/gnuplot_x11
+
+  wxwidgets-sdk:
+    plugin: nil
+    stage-snaps:
+      - wxwidgets-sdk-gtk3
+    stage-packages:
+      # Crash dialog support
+      - binutils
+    filesets:
+      crash-dialog-support:
+        - usr/bin/*addr2line
+      library-shared:
+        - '**/lib/**/*.so*'
+    prime:
+      - $crash-dialog-support
+      - $library-shared
 
   workaround:
     plugin: nil
