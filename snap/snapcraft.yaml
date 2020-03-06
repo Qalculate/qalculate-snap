@@ -1,5 +1,7 @@
 name: qalculate
+title: Qalculate!
 version: '3.8.0'
+license: GPL-2.0+
 summary: The ultimate desktop calculator
 description: |
   Qalculate! is a multi-purpose cross-platform desktop calculator. It is simple
@@ -24,24 +26,22 @@ slots:
 apps:
   qalc:
     environment:
-        DISABLE_WAYLAND: 1
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command: desktop-launch qalc
     extensions: [gnome-3-28]
-    plugs: [network]
+    plugs: [network, home, removable-media]
   gtk:
     environment:
-        DISABLE_WAYLAND: 1
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command:  desktop-launch qalculate-gtk
     extensions: [gnome-3-28]
-    plugs: [unity7, network, home]
+    plugs: [unity7, gsettings, network, home, removable-media]
   gnuplot:
     environment: 
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command: desktop-launch gnuplot
     extensions: [gnome-3-28]
-    plugs: [unity7, home]
+    plugs: [unity7, gsettings, home, removable-media]
 
 parts:
   libqalculate:
@@ -58,10 +58,6 @@ parts:
       - libmpfr-dev
       - intltool
       - doxygen
-    stage-packages:
-      - libcurl3-gnutls
-      - libmpfr6
-      - libxml2
     override-build: |
       for p in $SNAPCRAFT_PROJECT_DIR/patches/lib/*.patch
       do
@@ -133,25 +129,88 @@ parts:
       strip $SNAPCRAFT_PART_INSTALL/libexec/gnuplot/5.2/gnuplot_x11
 
   wxwidgets-sdk:
-    plugin: nil
-    stage-snaps:
-      - wxwidgets-sdk-gtk3
-    stage-packages:
-      # Crash dialog support
-      - binutils
+    source: https://github.com/wxWidgets/wxWidgets.git
+    source-tag:  v3.0.4
+    source-depth: 1
+    plugin: autotools
+    configflags:
+      - --enable-shared
+      - --disable-static
+      - --disable-gstreamer8
+      - --disable-mediactrl
+      - --disable-propgrid
+      - --disable-stc
+      - --disable-webkit
+      - --disable-webview
+      - --disable-ribbon
+      - --enable-unicode
+      - --with-gtk=3
+      - --with-opengl
+      - --with-libjpeg
+      - --with-libpng
+      - --with-zlib
     filesets:
-      crash-dialog-support:
-        - usr/bin/*addr2line
+      autoconf-macros:
+        - share/aclocal
+      bakefiles:
+        - share/bakefile
+      copyright:
+        - usr/share/doc/*/copyright
+      executables:
+        - bin
+        - lib/wx/config
+      library-headers:
+        - include
       library-shared:
-        - '**/lib/**/*.so*'
+        - lib/*.so*
+        - lib/*/*.so*
+        - usr/lib/*.so*
+        - usr/lib/*/*.so*
+      library-static:
+        - lib/**.a
+      localizations:
+        - share/locale
+      misc:
+        - usr/bin/*addr2line
+    build-packages:
+      - gcc
+      - g++
+      - gettext
+      - libcairo2-dev
+      - libexpat1-dev
+      - libgl1-mesa-dev
+      - libglu1-mesa-dev
+      - libgtk-3-dev
+      - libjpeg-dev
+      - libnotify-dev
+      - libpng-dev
+      - libsecret-1-dev
+      - libtiff5-dev
+      - libxtst-dev
+      - zlib1g-dev
+    override-build: |
+      set \
+        -o errexit \
+        -o nounset;
+      snapcraftctl build;
+      # Fix-up wx-config link
+      ln \
+        --force \
+        --relative \
+        --symbolic \
+        "${SNAPCRAFT_PART_INSTALL}"/lib/wx/config/* \
+        "${SNAPCRAFT_PART_INSTALL}"/bin/wx-config;
+      # Fix-up installation prefix
+      # command line - How to use sed to replace only the first occurrence in a file? - Stack Overflow
+      # https://stackoverflow.com/questions/148451/how-to-use-sed-to-replace-only-the-first-occurrence-in-a-file
+      sed \
+        --follow-symlinks \
+        --in-place \
+        "0,/^prefix=.*\$/ s##prefix=\"${SNAPCRAFT_STAGE}\"#" \
+        "${SNAPCRAFT_PART_INSTALL}"/bin/wx-config;
     prime:
-      - $crash-dialog-support
+      - $copyright
       - $library-shared
-
-  workaround:
-    plugin: nil
-    stage-packages:
-      - libgtk-3-0
-    prime:
-      - "-*"
+      - $localizations
+      - $misc
 
