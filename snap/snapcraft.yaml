@@ -1,6 +1,6 @@
 name: qalculate
 title: Qalculate!
-version: '3.8.0'
+version: '3.8.0a'
 license: GPL-2.0+
 summary: The ultimate desktop calculator
 description: |
@@ -30,7 +30,13 @@ apps:
     command: desktop-launch qalc
     extensions: [gnome-3-28]
     plugs: [network, home, removable-media]
-  gtk:
+  qalculate:
+    environment:
+        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
+    command:  desktop-launch qalculate-gtk
+    extensions: [gnome-3-28]
+    plugs: [unity7, gsettings, network, home, removable-media]
+  gtk:  # old variant of the above
     environment:
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command:  desktop-launch qalculate-gtk
@@ -79,9 +85,11 @@ parts:
 
   qalculate-gtk:
     source: https://github.com/Qalculate/qalculate-gtk.git
-    source-tag: v3.8.0
+    source-tag: v3.8.0a
     source-depth: 1
     plugin: autotools
+    configflags:
+      - --with-webkitgtk
     build-packages:
       - libgmp-dev
       - libgtk-3-dev
