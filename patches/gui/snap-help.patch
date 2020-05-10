@@ -1,14 +1,14 @@
 diff --git a/src/callbacks.cc b/src/callbacks.cc
-index 20187fc..c7a8f82 100644
+index f61afc2..dcc1953 100644
 --- a/src/callbacks.cc
 +++ b/src/callbacks.cc
-@@ -694,7 +694,8 @@ string get_doc_uri(string file, bool with_proto = true) {
+@@ -707,7 +707,8 @@ string get_doc_uri(string file, bool with_proto = true) {
  	gsub("\\", "/", surl);
  	surl += file;
- #else
+ #	else
 -	surl += PACKAGE_DOC_DIR "/html/";
 +	surl += getPackageDataDir();
 +	surl += "/doc/qalculate-gtk/html/";
  	surl += file;
+ #	endif
  #endif
- 	return surl;

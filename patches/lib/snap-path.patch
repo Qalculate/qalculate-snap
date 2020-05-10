@@ -1,5 +1,5 @@
 diff --git a/libqalculate/util.cc b/libqalculate/util.cc
-index f1be1b4..38b9b17 100644
+index 9bcdd8f..3b1fd5c 100644
 --- a/libqalculate/util.cc
 +++ b/libqalculate/util.cc
 @@ -470,11 +470,7 @@ string getLocalDir() {
@@ -49,20 +49,20 @@ index f1be1b4..38b9b17 100644
 +	const char *snap = getenv("SNAP");
 +	string datadir(snap);
 +	datadir += "/share";
-+ 	return datadir;
++	return datadir;
  #else
  	char exepath[MAX_PATH];
  	GetModuleFileName(NULL, exepath, MAX_PATH);
-@@ -583,7 +574,7 @@ string getPackageDataDir() {
- 
- string getGlobalDefinitionsDir() {
- #ifndef WIN32
+@@ -586,7 +577,7 @@ string getGlobalDefinitionsDir() {
+ 	return "resource:///qalculate";
+ #else
+ #	ifndef WIN32
 -	return string(PACKAGE_DATA_DIR) + "/qalculate";
 +	return getPackageDataDir() + "/qalculate";
- #else
+ #	else
  	char exepath[MAX_PATH];
  	GetModuleFileName(NULL, exepath, MAX_PATH);
-@@ -613,7 +604,7 @@ string getGlobalDefinitionsDir() {
+@@ -617,7 +608,7 @@ string getGlobalDefinitionsDir() {
  
  string getPackageLocaleDir() {
  #ifndef WIN32
