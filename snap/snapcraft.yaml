@@ -20,7 +20,7 @@ base: core18
 slots:
   dbus-qalculate:
     interface: dbus
-    name: org.gtk.qalculate
+    name: io.github.Qalculate
     bus: session
 
 apps:
@@ -90,6 +90,7 @@ parts:
     plugin: autotools
     configflags:
       - --with-webkitgtk
+      - --disable-gnome-search
     build-packages:
       - libgmp-dev
       - libgtk-3-dev
