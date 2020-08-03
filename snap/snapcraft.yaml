@@ -1,6 +1,6 @@
 name: qalculate
 title: Qalculate!
-version: '3.12.0'
+version: '3.12.1'
 license: GPL-2.0+
 summary: The ultimate desktop calculator
 description: |
@@ -52,7 +52,7 @@ apps:
 parts:
   libqalculate:
     source: https://github.com/Qalculate/libqalculate.git
-    source-tag: v3.12.0
+    source-commit: 96ac3d334b6e8649834ffcabd14667dcb3a7a32b
     source-depth: 1
     plugin: autotools
     build-packages:
@@ -85,7 +85,7 @@ parts:
 
   qalculate-gtk:
     source: https://github.com/Qalculate/qalculate-gtk.git
-    source-tag: v3.12.0.1
+    source-tag: v3.12.1
     source-depth: 1
     plugin: autotools
     configflags:
