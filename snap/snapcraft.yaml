@@ -52,7 +52,7 @@ apps:
 parts:
   libqalculate:
     source: https://github.com/Qalculate/libqalculate.git
-    source-commit: 96ac3d334b6e8649834ffcabd14667dcb3a7a32b
+    source-commit: v3.12.1
     source-depth: 1
     plugin: autotools
     build-packages:
