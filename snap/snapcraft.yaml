@@ -85,7 +85,7 @@ parts:
 
   qalculate-gtk:
     source: https://github.com/Qalculate/qalculate-gtk.git
-    source-commit: b313fcd543ae39e9884bdf7166069c6aadafe972
+    source-commit: 3b32707bc07baceb2ab738276dadbe57a87d2c8a
     source-depth: 1
     plugin: autotools
     configflags:
@@ -102,7 +102,6 @@ parts:
       do
         cat $p | patch -p1
       done
-      ./autogen.sh
       snapcraftctl build
       echo Stripping qalculate-gtk
       strip $SNAPCRAFT_PART_INSTALL/bin/qalculate-gtk
