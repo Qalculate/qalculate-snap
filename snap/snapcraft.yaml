@@ -55,6 +55,8 @@ parts:
     source-tag: v3.22.0
     source-depth: 1
     plugin: autotools
+    build-environment:
+      - CXXFLAGS: "$CXXFLAGS -fsigned-char"
     build-packages:
       - libncurses5-dev
       - libreadline-dev
@@ -88,6 +90,8 @@ parts:
     source-tag: v3.22.0
     source-depth: 1
     plugin: autotools
+    build-environment:
+      - CXXFLAGS: "$CXXFLAGS -fsigned-char"
     configflags:
       - --with-webkitgtk
       - --disable-gnome-search
