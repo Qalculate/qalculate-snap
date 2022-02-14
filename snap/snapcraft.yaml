@@ -72,6 +72,7 @@ parts:
       do
         cat $p | patch -p1
       done
+      autoreconf -i
       snapcraftctl build
       echo Stripping qalc
       strip $SNAPCRAFT_PART_INSTALL/bin/qalc
