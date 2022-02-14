@@ -72,7 +72,7 @@ parts:
       do
         cat $p | patch -p1
       done
-      autoreconf -i
+      ./autogen.sh
       snapcraftctl build
       echo Stripping qalc
       strip $SNAPCRAFT_PART_INSTALL/bin/qalc
@@ -107,6 +107,7 @@ parts:
       do
         cat $p | patch -p1
       done
+      ./autogen.sh
       snapcraftctl build
       echo Stripping qalculate-gtk
       strip $SNAPCRAFT_PART_INSTALL/bin/qalculate-gtk
