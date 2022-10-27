@@ -17,6 +17,8 @@ grade: stable
 confinement: strict
 base: core18
 
+compression: lzo
+
 slots:
   dbus-qalculate:
     interface: dbus
