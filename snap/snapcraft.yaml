@@ -15,7 +15,7 @@ description: |
 
 grade: stable
 confinement: strict
-base: core18
+base: core20
 
 compression: lzo
 
@@ -30,25 +30,25 @@ apps:
     environment:
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command: desktop-launch qalc
-    extensions: [gnome-3-34]
+    extensions: [gnome-3-38]
     plugs: [network, home, removable-media]
   qalculate:
     environment:
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command:  desktop-launch qalculate-gtk
-    extensions: [gnome-3-34]
+    extensions: [gnome-3-38]
     plugs: [unity7, gsettings, network, home, removable-media]
   gtk:  # old variant of the above
     environment:
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command:  desktop-launch qalculate-gtk
-    extensions: [gnome-3-34]
+    extensions: [gnome-3-38]
     plugs: [unity7, gsettings, network, home, removable-media]
   gnuplot:
     environment: 
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
     command: desktop-launch gnuplot
-    extensions: [gnome-3-34]
+    extensions: [gnome-3-38]
     plugs: [unity7, gsettings, home, removable-media]
 
 parts:
