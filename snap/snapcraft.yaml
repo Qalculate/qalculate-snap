@@ -29,25 +29,25 @@ apps:
   qalc:
     environment:
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
-    command: desktop-launch qalc
+    command: bin/desktop-launch $SNAP/bin/qalc
     extensions: [gnome-3-38]
     plugs: [network, home, removable-media]
   qalculate:
     environment:
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
-    command:  desktop-launch qalculate-gtk
+    command: bin/desktop-launch $SNAP/bin/qalculate-gtk
     extensions: [gnome-3-38]
     plugs: [unity7, gsettings, network, home, removable-media]
   gtk:  # old variant of the above
     environment:
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
-    command:  desktop-launch qalculate-gtk
+    command: bin/desktop-launch $SNAP/bin/qalculate-gtk
     extensions: [gnome-3-38]
     plugs: [unity7, gsettings, network, home, removable-media]
   gnuplot:
     environment: 
         GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
-    command: desktop-launch gnuplot
+    command: bin/desktop-launch $SNAP/bin/gnuplot
     extensions: [gnome-3-38]
     plugs: [unity7, gsettings, home, removable-media]
 
@@ -95,7 +95,7 @@ parts:
     plugin: autotools
     build-environment:
       - CXXFLAGS: "$CXXFLAGS -fsigned-char"
-    configflags:
+    autotools-configure-parameters:
       - --with-webkitgtk
       - --disable-gnome-search
     build-packages:
@@ -123,7 +123,7 @@ parts:
     source: https://sourceforge.net/projects/gnuplot/files/gnuplot/5.2.8/gnuplot-5.2.8.tar.gz
     source-checksum: sha512/513dff15236dcb58c3c5471cdaa0713242787dbf30ef860c3f69152cb87c6392e4973caff5eb178707bbb84c78548e806b2920864a37686bce49425fbfdc4e8c
     plugin: autotools
-    configflags:
+    autotools-configure-parameters:
       - --without-gd
       - --without-libcerf
       - --without-linux-vga
@@ -155,7 +155,7 @@ parts:
     source: https://github.com/wxWidgets/wxWidgets/releases/download/v3.0.5.1/wxWidgets-3.0.5.1.tar.bz2
     source-checksum: sha512/0a789fc5e71d414e43f75b5c16076fe8b1bcd7671be0770e4269dcef66d830c1bc74e183f49db270b928862f13472666c283fe2aa98b9006681722e06100725d
     plugin: autotools
-    configflags:
+    autotools-configure-parameters:
       - --enable-shared
       - --disable-static
       - --disable-aui
