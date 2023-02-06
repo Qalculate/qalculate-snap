@@ -104,7 +104,7 @@ index 23b6da8..5d97581 100644
 -	return PACKAGE_DATA_DIR;
 +	const char *snap = getenv("SNAP");
 +	string datadir(snap);
-+	datadir += "/share";
++	datadir += "/usr/share";
 +	return datadir;
  #else
  	char exepath[MAX_PATH];

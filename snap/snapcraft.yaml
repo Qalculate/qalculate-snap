@@ -28,26 +28,26 @@ slots:
 apps:
   qalc:
     environment:
-        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
-    command: bin/desktop-launch $SNAP/bin/qalc
+        GNUPLOT_DRIVER_DIR: $SNAP/usr/libexec/gnuplot/5.2
+    command: usr/bin/qalc
     extensions: [gnome-3-38]
     plugs: [network, home, removable-media]
   qalculate:
     environment:
-        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
-    command: bin/desktop-launch $SNAP/bin/qalculate-gtk
+        GNUPLOT_DRIVER_DIR: $SNAP/usr/libexec/gnuplot/5.2
+    command: usr/bin/qalculate-gtk
     extensions: [gnome-3-38]
     plugs: [unity7, gsettings, network, home, removable-media]
   gtk:  # old variant of the above
     environment:
-        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
-    command: bin/desktop-launch $SNAP/bin/qalculate-gtk
+        GNUPLOT_DRIVER_DIR: $SNAP/usr/libexec/gnuplot/5.2
+    command: usr/bin/qalculate-gtk
     extensions: [gnome-3-38]
     plugs: [unity7, gsettings, network, home, removable-media]
   gnuplot:
-    environment: 
-        GNUPLOT_DRIVER_DIR: $SNAP/libexec/gnuplot/5.2
-    command: bin/desktop-launch $SNAP/bin/gnuplot
+    environment:
+        GNUPLOT_DRIVER_DIR: $SNAP/usr/libexec/gnuplot/5.2
+    command: usr/bin/gnuplot
     extensions: [gnome-3-38]
     plugs: [unity7, gsettings, home, removable-media]
 
@@ -59,6 +59,26 @@ parts:
     plugin: autotools
     build-environment:
       - CXXFLAGS: "$CXXFLAGS -fsigned-char"
+    autotools-configure-parameters:
+      - --prefix=/usr
+    organize:
+      snap/qalculate/current/usr: usr
+    stage-packages:
+      - libasn1-8-heimdal
+      - libcurl3-gnutls
+      - libgssapi3-heimdal
+      - libhcrypto4-heimdal
+      - libheimbase1-heimdal
+      - libheimntlm0-heimdal
+      - libhx509-5-heimdal
+      - libkrb5-26-heimdal
+      - libldap-2.4-2
+      - libnghttp2-14
+      - libroken18-heimdal
+      - librtmp1
+      - libsasl2-2
+      - libssh-4
+      - libwind0-heimdal
     build-packages:
       - libncurses5-dev
       - libreadline-dev
@@ -77,7 +97,7 @@ parts:
       ./autogen.sh
       snapcraftctl build
       echo Stripping qalc
-      strip $SNAPCRAFT_PART_INSTALL/bin/qalc
+      strip $SNAPCRAFT_PART_INSTALL/usr/bin/qalc
     after:
       - patches
     prime:
@@ -98,6 +118,25 @@ parts:
     autotools-configure-parameters:
       - --with-webkitgtk
       - --disable-gnome-search
+      - --prefix=/usr
+    organize:
+      snap/qalculate/current/usr: usr
+    stage-packages:
+      - libasn1-8-heimdal
+      - libcurl3-gnutls
+      - libgssapi3-heimdal
+      - libhcrypto4-heimdal
+      - libheimbase1-heimdal
+      - libheimntlm0-heimdal
+      - libhx509-5-heimdal
+      - libkrb5-26-heimdal
+      - libldap-2.4-2
+      - libnghttp2-14
+      - libroken18-heimdal
+      - librtmp1
+      - libsasl2-2
+      - libssh-4
+      - libwind0-heimdal
     build-packages:
       - libgmp-dev
       - libgtk-3-dev
@@ -112,7 +151,7 @@ parts:
       ./autogen.sh
       snapcraftctl build
       echo Stripping qalculate-gtk
-      strip $SNAPCRAFT_PART_INSTALL/bin/qalculate-gtk
+      strip $SNAPCRAFT_PART_INSTALL/usr/bin/qalculate-gtk
     after:
       - libqalculate
       - patches
@@ -131,6 +170,9 @@ parts:
       - --without-qt
       - --with-readline=gnu
       - --enable-wxwidgets
+      - --prefix=/usr
+    organize:
+      snap/qalculate/current/usr: usr
     build-packages:
       - libcairo2-dev
       - libpango1.0-dev
@@ -148,8 +190,8 @@ parts:
     override-build: |
       snapcraftctl build
       echo Stripping gnuplot
-      strip $SNAPCRAFT_PART_INSTALL/bin/gnuplot
-      strip $SNAPCRAFT_PART_INSTALL/libexec/gnuplot/5.2/gnuplot_x11
+      strip $SNAPCRAFT_PART_INSTALL/usr/bin/gnuplot
+      strip $SNAPCRAFT_PART_INSTALL/usr/libexec/gnuplot/5.2/gnuplot_x11
 
   wxwidgets-sdk:
     source: https://github.com/wxWidgets/wxWidgets/releases/download/v3.0.5.1/wxWidgets-3.0.5.1.tar.bz2
@@ -177,27 +219,30 @@ parts:
       - --with-libjpeg
       - --with-libpng
       - --with-zlib
+      - --prefix=/usr
+    organize:
+      snap/qalculate/current/usr: usr
     filesets:
       autoconf-macros:
-        - share/aclocal
+        - usr/share/aclocal
       bakefiles:
-        - share/bakefile
+        - usr/share/bakefile
       copyright:
         - usr/share/doc/*/copyright
       executables:
-        - bin
-        - lib/wx/config
+        - usr/bin
+        - usr/lib/wx/config
       library-headers:
-        - include
+        - usr/include
       library-shared:
         - lib/*.so*
         - lib/*/*.so*
         - usr/lib/*.so*
         - usr/lib/*/*.so*
       library-static:
-        - lib/**.a
+        - usr/lib/**.a
       localizations:
-        - share/locale
+        - usr/share/locale
       misc:
         - usr/bin/*addr2line
     build-packages:
@@ -224,16 +269,16 @@ parts:
         --force \
         --relative \
         --symbolic \
-        "${SNAPCRAFT_PART_INSTALL}"/lib/wx/config/* \
-        "${SNAPCRAFT_PART_INSTALL}"/bin/wx-config;
+        "${SNAPCRAFT_PART_INSTALL}"/usr/lib/wx/config/* \
+        "${SNAPCRAFT_PART_INSTALL}"/usr/bin/wx-config;
       # Fix-up installation prefix
       # command line - How to use sed to replace only the first occurrence in a file? - Stack Overflow
       # https://stackoverflow.com/questions/148451/how-to-use-sed-to-replace-only-the-first-occurrence-in-a-file
       sed \
         --follow-symlinks \
         --in-place \
-        "0,/^prefix=.*\$/ s##prefix=\"${SNAPCRAFT_STAGE}\"#" \
-        "${SNAPCRAFT_PART_INSTALL}"/bin/wx-config;
+        "0,/^prefix=.*\$/ s##prefix=\"${SNAPCRAFT_STAGE}\"/usr#" \
+        "${SNAPCRAFT_PART_INSTALL}"/usr/bin/wx-config;
     prime:
       - $copyright
       - $library-shared
