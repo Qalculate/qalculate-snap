@@ -1,8 +1,8 @@
-diff --git a/src/callbacks.cc b/src/callbacks.cc
-index f61afc2..dcc1953 100644
---- a/src/callbacks.cc
-+++ b/src/callbacks.cc
-@@ -707,7 +707,8 @@ string get_doc_uri(string file, bool with_proto = true) {
+diff --git a/src/openhelp.cc b/src/openhelp.cc
+index 0d539fc..e93af25 100644
+--- a/src/openhelp.cc
++++ b/src/openhelp.cc
+@@ -89,7 +89,8 @@ string get_doc_uri(string file, bool with_proto = true) {
  	gsub("\\", "/", surl);
  	surl += file;
  #	else
