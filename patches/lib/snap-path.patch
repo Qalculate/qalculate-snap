@@ -2,7 +2,7 @@ diff --git a/libqalculate/util.cc b/libqalculate/util.cc
 index 23b6da8..5d97581 100644
 --- a/libqalculate/util.cc
 +++ b/libqalculate/util.cc
-@@ -463,91 +463,13 @@ string getOldLocalDir() {
+@@ -556,91 +556,13 @@ string getOldLocalDir() {
  #endif
  }
  string getLocalDir() {
@@ -28,7 +28,7 @@ index 23b6da8..5d97581 100644
 -#	endif
 -#else
 -	if((homedir = getenv("XDG_CONFIG_HOME")) == NULL) {
--		return string(getpwuid(getuid())->pw_dir) + "/.config/qalculate";
+-		return getHomeDir() + "/.config/qalculate";
 -	}
 -	return string(homedir) + "/qalculate";
 -#endif
@@ -57,7 +57,7 @@ index 23b6da8..5d97581 100644
 -#	endif
 -#else
 -	if((homedir = getenv("XDG_DATA_HOME")) == NULL) {
--		return string(getpwuid(getuid())->pw_dir) + "/.local/share/qalculate";
+-		return getHomeDir() + "/.local/share/qalculate";
 -	}
 -	return string(homedir) + "/qalculate";
 -#endif
@@ -89,7 +89,7 @@ index 23b6da8..5d97581 100644
 -#	endif
 -#else
 -	if((homedir = getenv("XDG_CACHE_HOME")) == NULL) {
--		return string(getpwuid(getuid())->pw_dir) + "/.cache/qalculate";
+-		return getHomeDir() + "/.cache/qalculate";
 -	}
 -	return string(homedir) + "/qalculate";
 -#endif
@@ -97,7 +97,7 @@ index 23b6da8..5d97581 100644
  }
  
  bool move_file(const char *from_file, const char *to_file) {
-@@ -588,7 +510,10 @@ bool move_file(const char *from_file, const char *to_file) {
+@@ -681,7 +603,10 @@ bool move_file(const char *from_file, const char *to_file) {
  
  string getPackageDataDir() {
  #ifndef WIN32
@@ -109,7 +109,7 @@ index 23b6da8..5d97581 100644
  #else
  	char exepath[MAX_PATH];
  	GetModuleFileName(NULL, exepath, MAX_PATH);
-@@ -610,15 +535,7 @@ string getGlobalDefinitionsDir() {
+@@ -703,15 +628,7 @@ string getGlobalDefinitionsDir() {
  	return "";
  #else
  #	ifndef WIN32
@@ -126,7 +126,7 @@ index 23b6da8..5d97581 100644
  #	else
  	char exepath[MAX_PATH];
  	GetModuleFileName(NULL, exepath, MAX_PATH);
-@@ -649,7 +566,7 @@ string getGlobalDefinitionsDir() {
+@@ -742,7 +659,7 @@ string getGlobalDefinitionsDir() {
  
  string getPackageLocaleDir() {
  #ifndef WIN32
