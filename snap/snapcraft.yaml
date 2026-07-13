@@ -79,7 +79,7 @@ parts:
       - libmpfr6
       - libgmp10
     override-build: |
-      patch -p1 < $CRAFT_STAGE/patches/snap-path.patch
+      patch -p1 < $CRAFT_STAGE/patches/lib/snap-path.patch
       ./autogen.sh
       craftctl default
       echo Stripping qalc
@@ -114,10 +114,7 @@ parts:
       - libxml2-dev
       - intltool
     override-build: |
-      for p in $CRAFT_PROJECT_DIR/patches/gui/*.patch
-      do
-        cat $p | patch -p1
-      done
+      patch -p1 < $CRAFT_STAGE/patches/gui/snap-help.patch
       ./autogen.sh
       craftctl default
       echo Stripping qalculate-gtk
@@ -152,8 +149,8 @@ parts:
       strip $CRAFT_PART_INSTALL/usr/bin/gnuplot
 
   wxwidgets-sdk:
-    source: https://github.com/wxWidgets/wxWidgets/releases/download/v3.3.3/wxWidgets-3.3.3.tar.bz2
-    source-checksum: sha256/0d55c1b9dadb31536c922b846194072aaf608641cd7e314a3b983996d1a30ccd
+    source: https://github.com/wxWidgets/wxWidgets/releases/download/v3.2.11/wxWidgets-3.2.11.tar.bz2
+    source-checksum: sha256/6a129015bce2e914e4bf61ec4411854ad962801d47e92f2eb8340adb6a90af08
     plugin: autotools
     autotools-configure-parameters:
       - --enable-shared
@@ -166,7 +163,6 @@ parts:
       - --disable-richtext
       - --disable-webview
       - --disable-xrc
-      - --enable-unicode
       - --with-gtk=3
       - --without-opengl
       - --without-libnotify
