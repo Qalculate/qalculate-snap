@@ -32,6 +32,8 @@ apps:
     command: usr/bin/qalc
     environment:
         GNUPLOT_DRIVER_DIR: "$SNAP/usr/libexec/gnuplot/6.0"
+    plugs:
+      - network
   qalculate:
     extensions:
       - gnome
@@ -40,6 +42,7 @@ apps:
         GNUPLOT_DRIVER_DIR: "$SNAP/usr/libexec/gnuplot/6.0"
     plugs:
       - home
+      - network
   gtk:  # old variant of the above
     extensions:
       - gnome
@@ -48,6 +51,7 @@ apps:
         GNUPLOT_DRIVER_DIR: "$SNAP/usr/libexec/gnuplot/6.0"
     plugs:
       - home
+      - network
   gnuplot:
     extensions:
       - gnome
